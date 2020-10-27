@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Janken!</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <style>
+
+    </style>
+    <header>
+
+    </header>
+    <body>
+        <script>
+            const rock = "rock";
+            const paper = "paper";
+            const scissors = "scissors";
+            const win = "win";
+            const loss = "loss";
+            const tie = "tie";
+
+            function computerPlay() {
+                let computerHand = Math.floor(Math.random() * 100);
+                switch(true) {
+                    case (computerHand % 3 === 0):
+                        return rock;
+                    break;
+                    
+                    case (computerHand % 3 === 1):
+                        return paper;
+                    break;
+
+                    case (computerHand % 3 === 2):
+                        return scissors;
+                    break;
+                }
+            }
+
+            function playerPlay() {
+                let playerHand = prompt("Let's play Janken! Choose your destiny: ");
+                switch(true) {
+                    case (playerHand.toLowerCase() === rock):
+                        return rock;
+                    break;
+
+                    case (playerHand.toLowerCase() === paper):
+                        return paper;
+                    break;
+
+                    case (playerHand.toLowerCase() === scissors):
+                        return scissors;
+                    break;
+                    
+                    default:
+                        console.log("Invalid entry. Please try again!");
+                        playerPlay();
+                    break;
+                    }
+
+                }
+
+            function playRound(playerSelection, computerSelection) {
+                let result = playerSelection + computerSelection;
+                let returnString = "";
+
+                if(playerSelection === computerSelection){
+                    returnString = `${playerSelection} ties with ${computerSelection}!`
+                    result = tie;
+                }
+                else {
+                     switch(result) {
+                        case "rockpaper":
+                            returnString = "You lose! Rock gets covered by paper.";
+                            result = loss;
+                        break;
+
+                        case "rockscissors":
+                            returnString = "You win! Rock smashes over scissors.";
+                            result = win;
+                        break;
+
+                        case "paperrock":
+                            returnString = "Paper covers up rock. You win!";
+                            result = win;
+                        break;
+                        
+                        case "paperscissors":
+                            returnString = "Paper gets sliced by scissors. You lose!";
+                            result = loss;
+                        break;
+
+                        case "scissorsrock":
+                            returnString = "Scissors get smashed by rock. You lose!";
+                            result = loss;
+                        break;
+
+                        case "scissorspaper":
+                            returnString = "Scissors slices up paper. You win!";
+                            result = win;
+                        break;
+                     }
+                }
+                return [returnString, result];
+            }
+
+            function game() {
+                let score = [0, 0, 0];
+                let resultsArray = [];
+                for (gameCounter = 1; gameCounter <= 5; ++gameCounter) {
+                    resultsArray = playRound(playerPlay(), computerPlay());
+                    switch(resultsArray[1]) {
+                        case win:
+                            score[0]++;
+                        break;
+
+                        case loss:
+                            score[1]++;
+                        break;
+
+                        case tie:
+                            score[2]++;
+                        break;
+                    }
+                console.log(resultsArray[0] + ` Current score: ${score[0]}-${score[1]}-${score[2]}`);
+                }
+                console.log(`Final record: ${score[0]}-${score[1]}-${score[2]}`);
+            }
+        </script>
+    </body>
+    <footer>
+
+    </footer>
+</html>
