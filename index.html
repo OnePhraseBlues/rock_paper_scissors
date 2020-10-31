@@ -36,9 +36,11 @@
         <div><h1 id="heading">Choose your destiny:</h1></div>
         <div class=container>
             <div id="buttonInterface">
-                <button id=rock>Rock</button>
-                <button id=paper>Paper</button>
-                <button id=scissors>Scissors</button>
+				<button id=start>Start!</button>
+                <button class="janken" id=rock>Rock</button>
+                <button class="janken" id=paper>Paper</button>
+                <button class="janken" id=scissors>Scissors</button>
+				<button id=restart>Run it back!</button>
             </div>
             <div></div>
         </div>
@@ -50,14 +52,19 @@
             const win = "win";
             const loss = "loss";
             const tie = "tie";
-
-            const buttons = document.querySelectorAll('button');
+			var score = [0, 0, 0];
+			
+			const buttonInterface = document.querySelector('#buttonInterface');
+			const startButton = document.querySelector('#start);
+			
+            const buttons = document.querySelector('.janken');
             buttons.forEach((button) => {
                 button.addEventListener('click', () => {
-                    game(button.id)
+                    playerPlay(button.id)
                 });
             });
-
+			
+			
             const container = document.querySelector('#vcontainer');
 
             const response = document.createElement('div');
@@ -71,11 +78,23 @@
             container.appendChild(scoreboard);
 
             let scoreboardArray = [];
-            const scoreboardItem = document.createElement('li');
-            for (let loopCounter = 1; loopCounter <= 3; ++loopCounter) {
-                scoreboardArray.push(scoreboardItem);
+            for (let loopCounter = 0; loopCounter <= 2; ++loopCounter) {
+                scoreboardArray.push(document.createElement('li'));
+				scoreboardArray[loopCounter].classList.add('scoreboard-item');
+				switch (loopCounter) {
+					case 0:
+						scoreboardArray[0].textContent = `Player: ${score[0]}`
+					break;
+					
+					case 1:
+						scoreboardArray[1].textContent = `CPU: ${score[1]}`
+					break;
+					
+					case 2:
+						scoreboardArray[2].textContent = `Ties: ${score[2]}`
+					break;
+				}
             }
-            scoreboardArray.forEach(() => {scoreboard.appendChild(...scoreboardArray)});
 
             const heading = document.querySelector('#heading');
 
@@ -156,11 +175,11 @@
                 return [returnString, result];
             }
 
-            function game(playerSelection) {
-                let score = [0, 0, 0];
+            function game() {
                 let resultsArray = [];
-                for (gameCounter = 1; gameCounter <= 5; ++gameCounter) {
-                    resultsArray = playRound(playerPlay(playerSelection), computerPlay());
+				scoreboard.textContent = `Current score: `;
+                do {
+                    resultsArray = playRound(, computerPlay());
                     switch(resultsArray[1]) {
                         case win:
                             score[0]++;
@@ -175,11 +194,8 @@
                         break;
                     }
                 response.textContent = (resultsArray[0]);
-                scoreboard.textContent = `Current score: `;
-                scoreboardArray[0].textContent = `Player: ${score[0]}`;
-                scoreboardArray[1].textContent = `CPU: ${score[1]}`;
-                scoreboardArray[2].textContent = `Ties: ${score[2]}`;
                 }
+				while (score[0] < 5 || score[1] < 5)
 
                 if(score[0] > score[1]) {
                     heading.textContent = 'Winner Winner Chicken Dinner!!!';
