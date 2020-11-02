@@ -1,6 +1,6 @@
-Things left to do:
+Things to do:
 
--scoreboard not functional
+-div buttonInterface: buttons will be dynamically created/removed on js instead of html
 
 Proposal:
 
