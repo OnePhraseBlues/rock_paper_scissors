@@ -32,15 +32,10 @@
 
     </header>
     <body>
-        <div id='vcontainer'>
+        <div id="vcontainer">
         <div><h1 id="heading">Choose your destiny:</h1></div>
-        <div class=container>
+        <div id="container">
             <div id="buttonInterface">
-				<button id=start>Start!</button>
-                <button class="janken" id=rock>Rock</button>
-                <button class="janken" id=paper>Paper</button>
-                <button class="janken" id=scissors>Scissors</button>
-				<button id=restart>Run it back!</button>
             </div>
             <div></div>
         </div>
@@ -53,29 +48,38 @@
             const loss = "loss";
             const tie = "tie";
 			var score = [0, 0, 0];
+			var play = "";
 			
-			const buttonInterface = document.querySelector('#buttonInterface');
-			const startButton = document.querySelector('#start);
+            const vcontainer = document.getElementById('vcontainer');
+			const container = document.getElementById('container');
+			const buttonInterface = document.getElementById('buttonInterface');
+
+			const startButton = document.createElement('button');
+			const rockButton = document.createElement('button');
+			const paperButton = document.createElement('button');
+			const scissorsButton = document.createElement('button');
+			const restartButton = document.createElement('button');
+			startButton.textContent = "Start!";
+			rockButton.textContent = "Rock";
+			paperButton.textContent = "Paper";
+			scissorsButton.textContent = "Scissors";
+			restartButton.textContent = "Run it back!";
+			buttonInterface.append(startButton);
 			
-            const buttons = document.querySelector('.janken');
-            buttons.forEach((button) => {
-                button.addEventListener('click', () => {
-                    playerPlay(button.id)
-                });
-            });
+			startButton.addEventListener('click', startGame);
+			rockButton.addEventListener('click', () => (play = playerPlay(rock)));
+			paperButton.addEventListener('click', () => (play = playerPlay(paper)));
+			scissorsButton.addEventListener('click', () => (play = playerPlay(scissors)));
+			restartButton.addEventListener('click', restartGame);
 			
-			
-            const container = document.querySelector('#vcontainer');
 
             const response = document.createElement('div');
-            response.classList.add('content');
             response.style.marginTop = '20px';
-            container.appendChild(response);
+            vcontainer.append(response);
 
             const scoreboard = document.createElement('ul');
-            scoreboard.classList.add('content');
             scoreboard.style.marginTop = '20px';
-            container.appendChild(scoreboard);
+            vcontainer.append(scoreboard);
 
             let scoreboardArray = [];
             for (let loopCounter = 0; loopCounter <= 2; ++loopCounter) {
@@ -97,7 +101,21 @@
             }
 
             const heading = document.querySelector('#heading');
-
+			
+			function startGame() {
+				buttonInterface.replaceChildren();
+				buttonInterface.append(rockButton, paperButton, scissorsButton);
+				game();
+			}
+			
+			function restartGame() {
+				buttonInterface.replaceChildren();
+				buttonInterface.append(rockButton, paperButton, scissorsButton);
+				score.fill(0);
+				heading.textContent = "Choose your destiny:";
+				game();
+			}
+			
             function computerPlay() {
                 let computerHand = Math.floor(Math.random() * 100);
                 switch(true) {
@@ -179,7 +197,7 @@
                 let resultsArray = [];
 				scoreboard.textContent = `Current score: `;
                 do {
-                    resultsArray = playRound(, computerPlay());
+                    resultsArray = playRound(play, computerPlay());
                     switch(resultsArray[1]) {
                         case win:
                             score[0]++;
